@@ -39,10 +39,13 @@ namespace IndependentWork
             string pcount = product_count.Text;
             string pbrand = product_brand.Text;
             string pprice = product_price.Text;
-            DateTime pdate = dateTimePicker1.Value;
-            MemoryStream ms = new MemoryStream();
-            product_img.Image.Save(ms, product_img.Image.RawFormat);
-            byte [] pimg = ms.ToArray();
+            DateTime pdate = dateTimePicker1.Value.Date;
+            byte[] pimg;
+            using (var ms = new MemoryStream())
+            {
+                product_img.Image.Save(ms, product_img.Image.RawFormat);
+                pimg = ms.ToArray();
+            }
 
             int product_year = dateTimePicker1.Value.Year;
             //int this_year = DateTime.Now.Year;

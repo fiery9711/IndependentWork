@@ -28,7 +28,7 @@ namespace IndependentWork
         // Bzani ochib bog'lovchi funksiya
         public void openConnection()
         {
-            if (conn.State == System.Data.ConnectionState.Open)
+            if (conn.State != System.Data.ConnectionState.Open)
             {
                 conn.Open();
             }
@@ -37,7 +37,7 @@ namespace IndependentWork
         // Bazani yopuvchi funksiya
         public void closeConnection()
         {
-            if (conn.State == System.Data.ConnectionState.Closed)
+            if (conn.State != System.Data.ConnectionState.Closed)
             {
                 conn.Close();
             }

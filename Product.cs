@@ -14,27 +14,32 @@ namespace IndependentWork
 
         public bool insertProduct(string pname, string pcount, string pbrand, string pprice, DateTime pdate, byte[] pimg)
         {
-            MySqlCommand terminal = new MySqlCommand("INSERT INTO `products`(`prId`, `prName`, `prCount`, `prBrand`, `prPrice`, `PrPhoto`, `prdate`) VALUES (@pn,@pc,@pb,@pp,@pi,@pd)", conn.getConnection);
+            var status = false;
+            try
+            {
+                conn.openConnection();
+                var newconn = conn.getConnection;
+                var sql = @"INSERT INTO `products`(`pname`, `pcount`, `pbrand`, `pprice`, `pimage`, `pdata`) VALUES (@pn,@pc,@pb,@pp,@pi,@pd)";
+                MySqlCommand terminal = newconn.CreateCommand();
+                terminal.CommandText = sql;
 
-            // @pn,@pc,@pb,@pp, @pd,@pi Going
-            terminal.Parameters.Add("@pn", MySqlDbType.VarChar).Value = pname;
-            terminal.Parameters.Add("@pc", MySqlDbType.VarChar).Value = pcount;
-            terminal.Parameters.Add("@pb", MySqlDbType.VarChar).Value = pbrand;
-            terminal.Parameters.Add("@pp", MySqlDbType.VarChar).Value = pprice;
-            terminal.Parameters.Add("@pd", MySqlDbType.Date).Value = pdate;
-            terminal.Parameters.Add("@pi", MySqlDbType.Blob).Value = pimg;
-
-            conn.openConnection();
-            if (terminal.ExecuteNonQuery() == 1)
+                // @pn,@pc,@pb,@pp, @pd,@pi Going
+                terminal.Parameters.Add("@pn", MySqlDbType.VarChar).Value = pname;
+                terminal.Parameters.Add("@pc", MySqlDbType.VarChar).Value = pcount;
+                terminal.Parameters.Add("@pb", MySqlDbType.VarChar).Value = pbrand;
+                terminal.Parameters.Add("@pp", MySqlDbType.VarChar).Value = pprice;
+                terminal.Parameters.Add("@pd", MySqlDbType.Date).Value = pdate;
+                terminal.Parameters.Add("@pi", MySqlDbType.Blob).Value = pimg;
+                if (terminal.ExecuteNonQuery() == 1)
+                {
+                    status = true;
+                }
+            } 
+            finally
             {
                 conn.closeConnection();
-                return true;
             }
-            else
-            {
-                conn.closeConnection();
-                return false;
-            }
+            return status;
         }
 
     }
